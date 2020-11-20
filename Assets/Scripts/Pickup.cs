@@ -14,7 +14,7 @@ public class Pickup : MonoBehaviour
         textChild.gameObject.SetActive(false);
     }
 
-    public Transform SetItemName(RaycastHit hit){
+    public Transform SetItemName(){
         if(!textChild.gameObject.active){
             textChild.gameObject.SetActive(true);
         }

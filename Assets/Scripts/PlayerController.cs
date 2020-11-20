@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
             if(IsTargetPickup(hit.transform)){
                 Pickup pickup = hit.transform.GetComponent<Pickup>();
-                textChild = pickup.SetItemName(hit);
+                textChild = pickup.SetItemName();
             }
             else if(textChild != null){
 
