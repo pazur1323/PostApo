@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public List<GameObject> itemList;
+    public List<string> itemList;
 
     private void Start() {
         
-        itemList = new List<GameObject>();
+        itemList = new List<string>();
     }
 
-    public void AddItem(GameObject gameObject){
+    public void AddItem(string name){
 
-        itemList.Add(gameObject);
+        itemList.Add(name);
+            
     }
 
 }

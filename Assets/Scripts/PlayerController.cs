@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
+    Transform textChild;
+    Transform target;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +20,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
+        if(target != null && IsTargetPickup(target)){
+            if(Vector3.Distance(target.position, transform.position) <= navMeshAgent.stoppingDistance){
+                target.GetComponent<Pickup>().GetItem();
+            }
+        }
     }
 
     void Move(){
@@ -27,10 +34,26 @@ public class PlayerController : MonoBehaviour
         bool isHit = Physics.Raycast(ray, out hit);
         if(isHit){
 
+            if(IsTargetPickup(hit.transform)){
+                Pickup pickup = hit.transform.GetComponent<Pickup>();
+                textChild = pickup.SetItemName(hit);
+            }
+            else if(textChild != null){
+
+                textChild.gameObject.SetActive(false);
+            }
+            
+
+            
             if(Input.GetMouseButtonDown(0)){
                 navMeshAgent.destination = hit.point;
+                target = hit.transform;
             }
         }
+    }
+
+    bool IsTargetPickup(Transform target){
+        return target.GetComponent<Pickup>() != null;
     }
 
     

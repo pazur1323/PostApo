@@ -4,31 +4,26 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    Inventory inventory;
     [SerializeField] GameObject prefab;
-    bool canPick = false;
-    bool gotItem = false;
-
+    Inventory inventory;
+    Transform textChild;
     private void Start() {
-
+        
         inventory = GameObject.FindObjectOfType<Inventory>();
-
+        textChild = transform.GetChild(0);
+        textChild.gameObject.SetActive(false);
     }
 
-    // Naprawić żeby pojawiał się obiekt w liście w Inventory
-    private void Update() {
-        
-        if(canPick){
-
-            inventory.AddItem(prefab);
-            gotItem = true;
-            canPick = false;
+    public Transform SetItemName(RaycastHit hit){
+        if(!textChild.gameObject.active){
+            textChild.gameObject.SetActive(true);
         }
+        textChild.rotation = Quaternion.LookRotation(textChild.position - Camera.main.transform.position);
+        return textChild;
     }
-    private void OnTriggerEnter(Collider other) {
 
-        if(!gotItem) canPick = true;
+    public void GetItem(){
+        inventory.AddItem(prefab.name);
         Destroy(gameObject);
-        
     }
 }
