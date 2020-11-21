@@ -22,8 +22,12 @@ public class Pickup : MonoBehaviour
         return textChild;
     }
 
-    public void GetItem(){
+    public List<GameObject> GetItem(List<GameObject> pickupList){
         inventory.AddItem(prefab.name);
-        Destroy(gameObject);
+        if(pickupList.Contains(gameObject)){
+            pickupList.Remove(gameObject);
+        }
+        return pickupList;
+
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public List<string> itemList;
+    List<string> itemList;
 
     private void Start() {
         
@@ -15,6 +15,10 @@ public class Inventory : MonoBehaviour
 
         itemList.Add(name);
             
+    }
+
+    public List<string> GetItemList(){
+        return itemList;
     }
 
 }
