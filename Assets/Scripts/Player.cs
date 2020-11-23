@@ -6,16 +6,22 @@ public class Player : MonoBehaviour
 {
     Inventory inventory;
     PlayerController playerController;
+    PickupsManager pickupsManager;
+    Pause pause;
 
     private void Start() {
         inventory = GetComponent<Inventory>();
         playerController = GetComponent<PlayerController>();
+        pickupsManager = GameObject.FindObjectOfType<PickupsManager>();
+        pause = GameObject.FindObjectOfType<Pause>();
     }
 
     public List<string> GetInventory(){
         return inventory.GetItemList();
     }
+
     public void SavePlayer(){
+        pause.DisplaySaveInfo();
         SaveSystem.SavePlayer(this);
     }
 
@@ -28,5 +34,8 @@ public class Player : MonoBehaviour
                                 data.playerPos[2]
                             );
         playerController.SetDestination(transform.position);
+        inventory.SetInventory(data.inventory);
+
+
     }
 }

@@ -21,4 +21,8 @@ public class Inventory : MonoBehaviour
         return itemList;
     }
 
+    public void SetInventory(List<string> inventory){
+        itemList = inventory;
+    }
+
 }

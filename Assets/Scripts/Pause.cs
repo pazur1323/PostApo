@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Pause : MonoBehaviour
 {
     [SerializeField] Canvas pauseCanvas;
+    [SerializeField] GameObject saveInfo;
     public bool isPaused = false;
 
     private void Start() {
@@ -36,5 +37,24 @@ public class Pause : MonoBehaviour
 
     public void Exit(){
         Application.Quit();
+    }
+
+    public void DisplaySaveInfo(){
+
+        StartCoroutine("GameSavedInfo");
+    }
+
+    IEnumerator GameSavedInfo(){
+
+        saveInfo.active = true;
+        print("On");
+        float start = Time.realtimeSinceStartup;
+         while (Time.realtimeSinceStartup < start + 2f)
+         {
+             yield return null;
+         }
+        saveInfo.active = false;
+        print("Off");
+
     }
 }

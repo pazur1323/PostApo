@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerData
 {
-    public List<string> itemList;
+    public List<string> inventory;
     public float[] playerPos;
 
     public PlayerData(Player player){
@@ -15,6 +15,7 @@ public class PlayerData
         playerPos[1] = player.transform.position.y;
         playerPos[2] = player.transform.position.z;
 
-        itemList = player.GetInventory();
+        inventory = player.GetInventory();
+
     }
 }
