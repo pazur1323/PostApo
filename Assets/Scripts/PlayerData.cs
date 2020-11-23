@@ -6,15 +6,15 @@ using UnityEngine;
 public class PlayerData
 {
     public List<string> itemList;
-    public float[] playerPosition;
+    public float[] playerPos;
 
-    public PlayerData(PlayerController playerController){
+    public PlayerData(Player player){
 
-        playerPosition = new float[3];
-        playerPosition[0] = playerController.transform.position.x;
-        playerPosition[1] = playerController.transform.position.y;
-        playerPosition[2] = playerController.transform.position.z;
+        playerPos = new float[3];
+        playerPos[0] = player.transform.position.x;
+        playerPos[1] = player.transform.position.y;
+        playerPos[2] = player.transform.position.z;
 
-        itemList = playerController.GetComponent<Inventory>().GetItemList();
+        itemList = player.inventory.GetItemList();
     }
 }

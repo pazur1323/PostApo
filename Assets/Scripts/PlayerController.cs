@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
-    Transform pickupInfo;
     Transform target;
     List<GameObject> pickups;
     bool isPaused;
@@ -29,12 +28,7 @@ public class PlayerController : MonoBehaviour
         isPaused = GameObject.Find("Pause").GetComponent<Pause>().isPaused;
         if(isPaused) return;
         Move();
-        if(target != null && IsTargetPickup(target)){
-            if(Vector3.Distance(target.position, transform.position) <= navMeshAgent.stoppingDistance){
-                pickups = target.GetComponent<Pickup>().GetItem(pickups);
-                Destroy(target.gameObject);
-            }
-        }
+        pickups = PickItemUp(target);
     }
 
     void Move(){
@@ -44,7 +38,14 @@ public class PlayerController : MonoBehaviour
         bool isHit = Physics.Raycast(ray, out hit);
         if(isHit){
 
-            DisplayPickupInfo(hit);
+            foreach (var item in pickups)
+            {
+                item.GetComponent<Pickup>().TurnOffLabel();
+            }
+            if(IsTargetPickup(hit.transform)){
+
+                hit.transform.GetComponent<Pickup>().SetLabel(); 
+            }
             
             if(Input.GetMouseButtonDown(0)){
                 navMeshAgent.destination = hit.point;
@@ -53,40 +54,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    List<GameObject> PickItemUp(Transform target){
+        if(target != null && IsTargetPickup(target)){
+            if(Vector3.Distance(target.position, transform.position) <= navMeshAgent.stoppingDistance){
+                List<GameObject> pickups =  new List<GameObject>();
+                pickups = target.GetComponent<Pickup>().GetItem(pickups);
+                Destroy(target.gameObject);
+                return pickups;
+            }
+        }
+        return pickups;
+    }
+
     bool IsTargetPickup(Transform target){
         return target.GetComponent<Pickup>() != null;
     }
 
-    void DisplayPickupInfo(RaycastHit hit){
-        if(IsTargetPickup(hit.transform)){
-            foreach (var item in pickups)
-            {
-                    
-                GameObject child = item.transform.GetChild(0).gameObject;
-                child.active = false;
-            }
-                
-            Pickup pickup = hit.transform.GetComponent<Pickup>();
-            pickupInfo = pickup.SetItemName();
-        }
-        else if(pickupInfo != null){
-
-            pickupInfo.gameObject.SetActive(false);
-        }
+    public void SetDestination(Vector3 destination){
+        navMeshAgent.destination = destination;
     }
 
-    public void SavePlayer(){
-        SaveSystem.SavePlayer(this);
-    }
-
-    public void LoadPlayer(){
-        PlayerData data = new PlayerData(this);
-        data = SaveSystem.LoadPlayer();
-        transform.position = new Vector3(
-                                data.playerPosition[0],
-                                data.playerPosition[1],
-                                data.playerPosition[2]
-                            );
-        navMeshAgent.destination = transform.position;
-    }
 }

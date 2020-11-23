@@ -14,20 +14,27 @@ public class Pickup : MonoBehaviour
         textChild.gameObject.SetActive(false);
     }
 
-    public Transform SetItemName(){
+    private void Update() {
+        textChild.rotation = Quaternion.LookRotation(textChild.position - Camera.main.transform.position);
+    }
+
+    public void SetLabel(){
         if(!textChild.gameObject.active){
             textChild.gameObject.SetActive(true);
         }
-        textChild.rotation = Quaternion.LookRotation(textChild.position - Camera.main.transform.position);
-        return textChild;
+    }
+
+    public void TurnOffLabel(){
+        textChild.gameObject.SetActive(false);
     }
 
     public List<GameObject> GetItem(List<GameObject> pickupList){
-        inventory.AddItem(prefab.name);
+        inventory.AddItem(prefab.gameObject.name);
         if(pickupList.Contains(gameObject)){
             pickupList.Remove(gameObject);
         }
         return pickupList;
 
     }
+
 }

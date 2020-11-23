@@ -16,14 +16,11 @@ public class Pause : MonoBehaviour
         
         if(Input.GetKeyDown(KeyCode.Escape)){
             if(!isPaused){
-
-                Debug.Log("Paused");
                 pauseCanvas.enabled = true;
                 Time.timeScale = 0;
                 isPaused = !isPaused;
             }
             else{
-                Debug.Log("Unpaused");
                 pauseCanvas.enabled = false;
                 Time.timeScale = 1;
                 isPaused = !isPaused;
@@ -31,7 +28,7 @@ public class Pause : MonoBehaviour
         }
     }
 
-    public void Unpause(){
+    public void Continue(){
         pauseCanvas.enabled = false;
         Time.timeScale = 1;
         isPaused = !isPaused;
