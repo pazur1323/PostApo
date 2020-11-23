@@ -7,11 +7,14 @@ public class Pickup : MonoBehaviour
     [SerializeField] GameObject prefab;
     Inventory inventory;
     Transform textChild;
+    PickupsManager pickupsManager;
+
     private void Start() {
         
         inventory = GameObject.FindObjectOfType<Inventory>();
         textChild = transform.GetChild(0);
         textChild.gameObject.SetActive(false);
+        pickupsManager = gameObject.GetComponentInParent<PickupsManager>();
     }
 
     private void Update() {
@@ -28,12 +31,13 @@ public class Pickup : MonoBehaviour
         textChild.gameObject.SetActive(false);
     }
 
-    public List<GameObject> GetItem(List<GameObject> pickupList){
+    public void GetItem(){
         inventory.AddItem(prefab.gameObject.name);
-        if(pickupList.Contains(gameObject)){
-            pickupList.Remove(gameObject);
-        }
-        return pickupList;
+        // List<GameObject> pickupList = pickupsManager.GetItemsInScene();
+        // if(pickupList.Contains(gameObject)){
+        //     pickupList.Remove(gameObject);
+        // }
+        // return pickupList;
 
     }
 

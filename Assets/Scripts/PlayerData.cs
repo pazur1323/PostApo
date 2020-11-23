@@ -15,6 +15,6 @@ public class PlayerData
         playerPos[1] = player.transform.position.y;
         playerPos[2] = player.transform.position.z;
 
-        itemList = player.inventory.GetItemList();
+        itemList = player.GetInventory();
     }
 }

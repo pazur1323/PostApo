@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
     Transform target;
-    List<GameObject> pickups;
+    PickupsManager pickupsManager;
     bool isPaused;
 
     // Start is called before the first frame update
@@ -15,10 +15,7 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = new Vector3(0f, 1f, 0f);
         navMeshAgent = GetComponent<NavMeshAgent>();
-        pickups = new List<GameObject>();
-        foreach(var pickup in Object.FindObjectsOfType<Pickup>()){
-            pickups.Add(pickup.gameObject);
-        }
+        pickupsManager = GameObject.FindObjectOfType<PickupsManager>();
 
     }
 
@@ -28,7 +25,7 @@ public class PlayerController : MonoBehaviour
         isPaused = GameObject.Find("Pause").GetComponent<Pause>().isPaused;
         if(isPaused) return;
         Move();
-        pickups = PickItemUp(target);
+        PickItemUp(target);
     }
 
     void Move(){
@@ -38,7 +35,7 @@ public class PlayerController : MonoBehaviour
         bool isHit = Physics.Raycast(ray, out hit);
         if(isHit){
 
-            foreach (var item in pickups)
+            foreach (var item in pickupsManager.GetItemsOnScene())
             {
                 item.GetComponent<Pickup>().TurnOffLabel();
             }
@@ -47,23 +44,20 @@ public class PlayerController : MonoBehaviour
                 hit.transform.GetComponent<Pickup>().SetLabel(); 
             }
             
-            if(Input.GetMouseButtonDown(0)){
+            if(Input.GetMouseButton(0)){
                 navMeshAgent.destination = hit.point;
                 target = hit.transform;
             }
         }
     }
 
-    List<GameObject> PickItemUp(Transform target){
+    void PickItemUp(Transform target){
         if(target != null && IsTargetPickup(target)){
             if(Vector3.Distance(target.position, transform.position) <= navMeshAgent.stoppingDistance){
-                List<GameObject> pickups =  new List<GameObject>();
-                pickups = target.GetComponent<Pickup>().GetItem(pickups);
+                target.GetComponent<Pickup>().GetItem();
                 Destroy(target.gameObject);
-                return pickups;
             }
         }
-        return pickups;
     }
 
     bool IsTargetPickup(Transform target){

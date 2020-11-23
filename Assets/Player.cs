@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Inventory inventory;
+    Inventory inventory;
     PlayerController playerController;
 
     private void Start() {
         inventory = GetComponent<Inventory>();
         playerController = GetComponent<PlayerController>();
+    }
+
+    public List<string> GetInventory(){
+        return inventory.GetItemList();
     }
     public void SavePlayer(){
         SaveSystem.SavePlayer(this);
